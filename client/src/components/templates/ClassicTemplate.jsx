@@ -104,6 +104,10 @@ const classNameicTemplate = ({ data, accentColor }) => {
                             <div key={index} className="flex justify-between items-start border-l-3 border-gray-300 pl-6">
                                 <div>
                                     <li className="font-semibold text-gray-800 ">{proj.name}</li>
+                                    <p className="text-sm text-gray-500 italic">
+                                        {proj.type}
+                                    </p>
+
                                     <p className="text-gray-600">{proj.description}</p>
                                 </div>
                             </div>

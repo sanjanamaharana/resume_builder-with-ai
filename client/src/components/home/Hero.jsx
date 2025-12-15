@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
 
-  const {user} = useSelector(state => state.auth)
+  const { user } = useSelector(state => state.auth)
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const logos = [
@@ -40,7 +40,7 @@ const Hero = () => {
               Login
             </Link>
             <Link to='/app' className='hidden md:block px-8 py-2 bg-green-500 hover:bg-green-700 active:scale-95 transition-all rounded-full text-white' hidden={!user}>
-            Dashboard
+              Dashboard
             </Link>
           </div>
 
@@ -59,6 +59,7 @@ const Hero = () => {
           <a href="#contact" className="text-white">Contact</a>
           <button onClick={() => setMenuOpen(false)} className="active:ring-3 active:ring-white aspect-square size-10 p-1 items-center justify-center bg-green-600 hover:bg-green-700 transition text-white rounded-md flex" >
             X
+
           </button>
         </div>
 
@@ -90,9 +91,8 @@ const Hero = () => {
 
           {/* Headline + CTA */}
           <h1 className="text-5xl md:text-6xl font-semibold max-w-5xl text-center mt-4 md:leading-[70px]">
-            Land your dream job with <span className=" bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent text-nowrap">AI-powered </span> resumes.
+            Land your dream job with <span className=" bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent text-nowrap">AI‑optimized </span> resumes that pass ATS filters.
           </h1>
-
           <p className="max-w-md text-center text-base my-7">Create, Edit and Download professional Resumes with AI-powered Assistance.</p>
 
           {/* CTA Buttons */}
@@ -107,7 +107,7 @@ const Hero = () => {
             </button>
           </div>
 
-          <p className="py-6 text-slate-600 mt-14">Trusting by leading brands, including</p>
+          <p className="py-6 text-slate-600 mt-14">Trusted by leading brands, including</p>
 
           <div className="flex flex-wrap justify-between max-sm:justify-center gap-6 max-w-3xl w-full mx-auto py-4" id="logo-container">
             {logos.map((logo, index) => <img key={index} src={logo} alt="logo" className="h-6 w-auto max-w-xs" />)}

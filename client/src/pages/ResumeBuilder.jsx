@@ -19,7 +19,7 @@ import toast from 'react-hot-toast';
 const ResumeBuilder = () => {
 
   const { resumeId } = useParams();
-  const {token} = useSelector(state => state.auth)
+  const { token } = useSelector(state => state.auth)
 
   const [resumeData, setResumeData] = useState({
     _id: '',
@@ -37,14 +37,16 @@ const ResumeBuilder = () => {
 
   const loadExistingResume = async () => {
     try {
-      const {data} = await api.get('/api/resumes/get/' + resumeId, {headers: {Authorization:  token}})
-      if(data.resume) {
+      const { data } = await api.get('/api/resumes/get/' + resumeId, { headers: { Authorization: token } })
+      if (data.resume) {
         setResumeData(data.resume)
+
+
         document.title = data.resume.title + ' - Resume Builder'
       }
     } catch (error) {
       console.log(error.message);
-      
+
     }
   }
 
@@ -71,9 +73,9 @@ const ResumeBuilder = () => {
       const formData = new FormData();
       formData.append('resumeId', resumeId);
       formData.append('resumeData', JSON.stringify({ public: !resumeData.public }));
-      const {data} = await api.put('/api/resumes/update', formData, {headers: {Authorization:  token}})
+      const { data } = await api.put('/api/resumes/update', formData, { headers: { Authorization: token } })
 
-      setResumeData({...resumeData, public: !resumeData.public})
+      setResumeData({ ...resumeData, public: !resumeData.public })
       toast.success(data.message);
     } catch (error) {
       console.error("Error updating resume :", error);
@@ -109,13 +111,26 @@ const ResumeBuilder = () => {
       formData.append('resumeData', JSON.stringify(updatedResumeData));
       // removeBackground && formData.append('removeBackground', 'yes');
       // typeof resumeData.personal_info.image === 'object' && formData.append('image', resumeData.personal_info.image);
-      if (removeBackground) formData.append('removeBackground', 'yes');
-    if (typeof resumeData.personal_info.image === 'object') {
-      formData.append('image', resumeData.personal_info.image);
-    }
+      // if (removeBackground) formData.append('removeBackground', 'yes');
+      if (
+        removeBackground &&
+        typeof resumeData.personal_info.image === 'object'
+      ) {
+        formData.append('removeBackground', 'yes');
+      }
 
-      const {data} = await api.put('/api/resumes/update', formData, {headers: {Authorization:  token}})
-      setResumeData(data.resume);
+      if (typeof resumeData.personal_info.image === 'object') {
+        formData.append('image', resumeData.personal_info.image);
+      }
+
+      const { data } = await api.put('/api/resumes/update', formData, { headers: { Authorization: token } })
+
+      setResumeData(prev => ({
+        ...prev,
+        ...data.resume,
+        projects: data.resume.projects ?? prev.projects,
+      }));
+    
       toast.success(data.message);
     } catch (error) {
       toast.error(error?.response?.data?.message || error.message);
@@ -185,26 +200,26 @@ const ResumeBuilder = () => {
               </div>
 
               <button
-  onClick={() =>
-    toast.promise(saveResume(), {
-      // loading: 'Saving...',
-      // success: 'Saved successfully!',
-      error: 'Failed to save resume.',
-    })
-  }
-  className="bg-gradient-to-br from-green-100 to-green-200 ring-green-300 text-green-600 ring hover:ring-green-400 transition-all rounded-md px-6 py-2 mt-6 text-sm"
->
-  Save Changes
-</button>
-            
-            {/*    <button 
+                onClick={() =>
+                  toast.promise(saveResume(), {
+                    // loading: 'Saving...',
+                    // success: 'Saved successfully!',
+                    error: 'Failed to save resume.',
+                  })
+                }
+                className="bg-gradient-to-br from-green-100 to-green-200 ring-green-300 text-green-600 ring hover:ring-green-400 transition-all rounded-md px-6 py-2 mt-6 text-sm"
+              >
+                Save Changes
+              </button>
+
+              {/*    <button 
                  onClick={handleSave} 
                  disabled={saveStatus === 'saving'}
                  className={`w-full transition-all rounded-md px-6 py-2 mt-6 text-sm font-medium shadow-md ${saveButtonClassName()}`}
                >
                  {saveButtonContent()}
                </button> */}
-         
+
             </div>
           </div>
           {/* right panel - resume preview */}

@@ -25,29 +25,70 @@ const PersonalInfoForm = ({ data, onChange, removeBackground, setRemoveBackgroun
       <h3 className='text-lg font-semibold text-gray-900'>Personal Information</h3>
       <p className='text-sm text-gray-600'>Get Started with the personal information</p>
       <div className='flex items-center gap-2 '>
-        <label >
+        <label className='flex items-center gap-2 mt-5 text-slate-600 hover:text-slate-700 cursor-pointer'>
+
           {data.image ? (
             <img src={typeof data.image === 'string' ? data.image : URL.createObjectURL(data.image)} alt='user-image' className='w-16 h-16 rounded-full object-cover mt-5 ring ring-slate-300 hover:opacity-80' />
           ) : (
             <div className='inline-flex items-center gap-2 mt-5 text-slate-600 hover:text-slate-700 cursor-pointer '>
-              <User className='size-10 p-2.5 border rounded-full' /> Upload user image
+              <User size={24} className='size-10 p-2.5 border rounded-full' /> Upload user image
             </div>
           )}
-          <input type="file" accept='image/jpeg, image/png' className='hidden' onChange={(e) => handleChange("image", e.target.files[0])} />
+          {/* <input type="file" accept='image/jpeg, image/png' className='hidden' onChange={(e) => handleChange("image", e.target.files[0])} /> */}
+          <input
+  type="file"
+  accept="image/jpeg, image/png"
+  className="hidden"
+  onChange={(e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    handleChange("image", file);
+    setRemoveBackground(false);
+    setHasUploadedImage(true);
+  }}
+/>
+
         </label>
-        {typeof data.image === 'object' && (
+        {/* {typeof data.image && (
           <div className='flex flex-col gap-1 pl-4 text-sm'>
             <p>Remove Background</p>
-            <label className='relative inline-flex items-center cursor-pointer text-gray-900 gap-3' >
-              <input type="checkbox" name="" id="" className='sr-only peer' onChange={() => setRemoveBackground(prev => !prev)} checked={removeBackground} />
-              <div className='w-9 h-5 bg-slate-300 rounded-full peer-checked:bg-green-600 transition-colors duration-200'>
-                <span className='dot absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-4'></span>
+            <label className='relative inline-flex items-center cursor-pointer text-gray-900 gap-3'>
+              <input
+                type="checkbox"
+                className='sr-only peer'
+                onChange={() => setRemoveBackground(prev => !prev)}
+                checked={removeBackground}
+              />
+              <div className='w-10 h-5 bg-slate-300 rounded-full peer-checked:bg-green-600 relative transition-colors duration-200'>
+                <span className='absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-200 ease-in-out peer-checked:translate-x-5'></span>
               </div>
-              
             </label>
           </div>
+
         )
-        }
+        } */}
+        { data.image  && (
+  <div className="flex flex-col gap-1 pl-4 text-sm">
+    <p>Remove Background</p>
+
+    <button
+      type="button"
+      onClick={() => setRemoveBackground(prev => !prev)}
+      className={`w-10 h-5  rounded-full relative transition-colors duration-300 active:scale-95 ${
+        removeBackground ? "bg-green-600 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : "bg-slate-300"
+      }`}
+    >
+      <span
+        className={`absolute left-0.5   top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out ${
+          removeBackground ? "translate-x-5" : "translate-x-0"
+        }`}
+      />
+    </button>
+  </div>
+)}
+
+        
+        
       </div>
       {fields.map((field) => {
         const Icon = field.icon;

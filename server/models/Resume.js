@@ -30,7 +30,7 @@ const ResumeSchema = new mongoose.Schema({
 
     }
   ],
-  project: [{
+  projects: [{
     name: {type: String },
     type: {type: String },
     description: {type: String },
